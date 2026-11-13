@@ -8,4 +8,5 @@ patches:
   - path: patch.yaml
 images:
   - name: ghcr.io/stefanprodan/podinfo
-    newTag: 6.7.1
+    newName: ghcr.io/delstondsouza/recon-app
+    newTag: 944d911
