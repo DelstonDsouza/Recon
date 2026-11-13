@@ -14,4 +14,4 @@ patches:
 images:
   - name: ghcr.io/stefanprodan/podinfo
     newName: ghcr.io/delstondsouza/recon-app
-    newTag: b43048b
+    newTag: bd460af
