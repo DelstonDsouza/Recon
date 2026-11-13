@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # Share of requests to "/" that fail with HTTP 500.
 # Good releases keep this at 0.0. The FAIL_RATE env var overrides it.
-DEFAULT_FAIL_RATE = 0.0
+DEFAULT_FAIL_RATE = 0.5
 
 _lock = threading.Lock()
 _counts = {200: 0, 500: 0}
