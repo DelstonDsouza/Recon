@@ -1,11 +1,12 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: podinfo
   labels:
     app: podinfo
 spec:
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: podinfo
@@ -13,6 +14,10 @@ spec:
     metadata:
       labels:
         app: podinfo
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9898"
+        prometheus.io/path: /metrics
     spec:
       containers:
         - name: podinfo
@@ -39,3 +44,16 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - analysis:
+            templates:
+              - templateName: error-rate
+            args:
+              - name: canary-hash
+                valueFrom:
+                  podTemplateHashValue: Latest
+        - setWeight: 50
+        - pause: {duration: 20s}

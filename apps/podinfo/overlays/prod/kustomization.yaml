@@ -4,8 +4,13 @@ namespace: podinfo-prod
 resources:
   - ../../base
   - namespace.yaml
+configurations:
+  - rollout-config.yaml
 patches:
-  - path: patch.yaml
+  - path: rollout-patch.yaml
+    target:
+      kind: Rollout
+      name: podinfo
 images:
   - name: ghcr.io/stefanprodan/podinfo
     newTag: 6.7.1

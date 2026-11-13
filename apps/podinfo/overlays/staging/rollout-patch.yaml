@@ -1,0 +1,10 @@
+- op: replace
+  path: /spec/replicas
+  value: 2
+- op: add
+  path: /spec/template/spec/containers/0/env
+  value:
+    - name: PODINFO_UI_MESSAGE
+      value: "Hello from STAGING"
+    - name: PODINFO_UI_COLOR
+      value: "#f39c12"
