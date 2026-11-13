@@ -51,7 +51,7 @@ def route(path):
         html = (
             f'<html><body style="background:{cfg["color"]};color:white;'
             f'font-family:sans-serif;text-align:center;padding-top:20vh">'
-            f'<h1>{cfg["message"]}</h1><p>version: {cfg["version"]}</p>'
+            f'<h1>{cfg["message"]}</h1><p>version: build: {cfg["version"]}</p>'
             f"</body></html>"
         )
         return 200, "text/html", html
