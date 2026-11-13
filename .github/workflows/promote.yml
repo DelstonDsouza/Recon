@@ -1,0 +1,36 @@
+name: promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Promote dev's current image to:"
+        type: choice
+        required: true
+        options:
+          - staging
+          - prod
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Promote dev image to target
+        run: |
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          IMAGE="ghcr.io/${OWNER}/recon-app"
+          TAG=$(grep 'newTag:' apps/podinfo/overlays/dev/kustomization.yaml | awk '{print $2}')
+          TARGET="${{ inputs.target }}"
+          echo "Promoting ${TAG} to ${TARGET}"
+          bash scripts/set-image.sh "$TARGET" "$TAG" "$IMAGE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "promote: ${TAG} to ${TARGET}"
+          git push origin main
